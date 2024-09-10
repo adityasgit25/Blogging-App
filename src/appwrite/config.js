@@ -15,6 +15,7 @@ export class Service{
     }
 
     async createPost({title, slug, content, featuredImage, status, userId}){
+        // slug is used as the unique identifier for the new document.
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,

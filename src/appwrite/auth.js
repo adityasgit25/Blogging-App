@@ -8,14 +8,15 @@ export class AuthService {
 
     constructor() {
         this.client
-            .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId);
-        this.account = new Account(this.client);
-            
+            .setEndpoint(conf.appwriteUrl) // appwrite server URL 
+            .setProject(conf.appwriteProjectId); // appwrite project Id
+        this.account = new Account(this.client); 
+        // here we have created account object to use account related methods
     }
 
     async createAccount({email, password, name}) {
         try {
+            // ID.unique() generates a unique identifier for the new user.
             const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
                 // call another method
@@ -28,6 +29,8 @@ export class AuthService {
         }
     }
 
+    // await ke baad jo bhi likha hota hai woh promise hota hai.
+    // whenever doing async operation, remember to put try catch block.
     async login({email, password}) {
         try {
             return await this.account.createEmailSession(email, password);
@@ -36,18 +39,19 @@ export class AuthService {
         }
     }
 
+    // as it is in a class so no need to write the function keyword, we can use arrow function or as shown below.
     async getCurrentUser() {
         try {
+            // extracting the current user
             return await this.account.get();
         } catch (error) {
             console.log("Appwrite serive :: getCurrentUser :: error", error);
         }
-
+        // After logging the error, the function returns null. This indicates that the function was unable to retrieve the current user. Returning null is a common practice to signify the absence of a value or that an operation did not succeed.
         return null;
     }
 
     async logout() {
-
         try {
             await this.account.deleteSessions();
         } catch (error) {

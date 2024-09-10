@@ -1,3 +1,6 @@
+// in the main.jsx we do routing for the app.
+// React-router-dom is not a part of react.
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'

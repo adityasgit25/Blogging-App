@@ -49,6 +49,7 @@ export default function PostForm({ post }) {
         }
     };
 
+    // this creates the slug from the title
     const slugTransform = useCallback((value) => {
         if (value && typeof value === "string")
             return value
@@ -61,12 +62,13 @@ export default function PostForm({ post }) {
     }, []);
 
     React.useEffect(() => {
+        // watch is a function (likely from a form library like react-hook-form) that subscribes to changes in form fields.It takes a callback function that receives the current value of the form and an object containing metadata about the change (e.g., the name of the field that changed).
         const subscription = watch((value, { name }) => {
             if (name === "title") {
                 setValue("slug", slugTransform(value.title), { shouldValidate: true });
             }
         });
-
+        // This is the cleanup function for the useEffect hook. It runs when the component unmounts or before the effect runs again.subscription.unsubscribe() unsubscribes from the form field changes to prevent memory leaks and unnecessary updates.
         return () => subscription.unsubscribe();
     }, [watch, slugTransform, setValue]);
 
